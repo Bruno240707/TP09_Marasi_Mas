@@ -1,0 +1,31 @@
+.hourly-forecast {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+  }
+  
+  .hour-card {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    min-width: 100px;
+    text-align: center;
+    flex-shrink: 0;
+    background-color: #f9f9f9;
+  }
+  
+  .hour-card .time {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .hour-card .description {
+    font-style: italic;
+    margin-bottom: 5px;
+  }
+  
+  .hour-card .temp {
+    margin: 2px 0;
+  }
+  
