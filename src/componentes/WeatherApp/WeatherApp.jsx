@@ -9,7 +9,7 @@ function WeatherApp() {
   const [currentWeather, setCurrentWeather] = useState(null);
   const [hourlyForecast, setHourlyForecast] = useState([]);
   const [dailyForecast, setDailyForecast] = useState([]);
-  const [selectedCity, setSelectedCity] = useState("");
+  const [selectedCity, setSelectedCity] = useState("Buenos Aires"); // ciudad por defecto
   const [searchQuery, setSearchQuery] = useState("");
   const [unit, setUnit] = useState("metric");
 
@@ -22,13 +22,13 @@ function WeatherApp() {
           params: { q: selectedCity, units: unit }
         });
 
-        // Current Weather → primer registro
-        setCurrentWeather({ ...res.data.list[0], name: selectedCity });
+        // ✅ usamos el nombre real de la ciudad de la API
+        setCurrentWeather({ ...res.data.list[0], name: res.data.city.name });
 
-        // Próximas 24h
+        // pronóstico horario (próximas 8 horas)
         setHourlyForecast(res.data.list.slice(0, 8));
 
-        // Agrupar por día
+        // pronóstico diario
         const daily = {};
         res.data.list.forEach(item => {
           const date = item.dt_txt.split(" ")[0];
@@ -46,14 +46,15 @@ function WeatherApp() {
   }, [selectedCity, unit]);
 
   const handleSearchQueryChange = (e) => setSearchQuery(e.target.value);
+
   const handleSearch = () => {
     if (searchQuery.trim() !== "") setSelectedCity(searchQuery);
   };
+
   const handleTemperatureUnitChange = (unit) => setUnit(unit);
 
   return (
     <div className="weather-app">
-      {/* ===== Buscador ===== */}
       <div className="search-bar">
         <input
           type="text"
@@ -64,19 +65,15 @@ function WeatherApp() {
         <button onClick={handleSearch}>Buscar</button>
       </div>
 
-      {/* ===== Toggle de unidades ===== */}
       <div className="unit-toggle">
         <button onClick={() => handleTemperatureUnitChange("metric")}>°C</button>
         <button onClick={() => handleTemperatureUnitChange("imperial")}>°F</button>
       </div>
 
-      {/* ===== Current Weather ===== */}
       <CurrentWeather weatherData={currentWeather} unit={unit} />
 
-      {/* ===== Hourly Forecast ===== */}
       <HourlyForecast forecastData={hourlyForecast} unit={unit} />
 
-      {/* ===== Daily Forecast ===== */}
       <DailyForecast forecastData={dailyForecast} unit={unit} />
     </div>
   );

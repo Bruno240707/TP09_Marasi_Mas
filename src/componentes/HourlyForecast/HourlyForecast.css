@@ -1,31 +1,26 @@
 .hourly-forecast {
-    display: flex;
-    gap: 10px;
-    overflow-x: auto;
-    padding-bottom: 10px;
-  }
-  
-  .hour-card {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    min-width: 100px;
-    text-align: center;
-    flex-shrink: 0;
-    background-color: #f9f9f9;
-  }
-  
-  .hour-card .time {
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-  
-  .hour-card .description {
-    font-style: italic;
-    margin-bottom: 5px;
-  }
-  
-  .hour-card .temp {
-    margin: 2px 0;
-  }
-  
+  display: flex;
+  overflow-x: auto;
+  gap: 15px;
+  margin-bottom: 30px;
+  padding-bottom: 10px;
+}
+
+.hour-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 14px;
+  padding: 15px;
+  min-width: 100px;
+  text-align: center;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+}
+
+.hour-card .time {
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.hour-card .temp {
+  font-size: 1.2rem;
+  margin-top: 8px;
+}
