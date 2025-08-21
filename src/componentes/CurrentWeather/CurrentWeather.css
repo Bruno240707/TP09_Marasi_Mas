@@ -1,25 +1,23 @@
 .current-weather {
-  background: rgba(255, 255, 255, 0.05);
-  padding: 25px;
-  border-radius: 16px;
-  text-align: center;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-  margin-bottom: 25px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 22px;
+  border-radius: 18px;
   width: 100%;
-  max-width: 500px;
 }
 
-.current-weather h2 {
-  font-size: 1.8rem;
-  margin-bottom: 10px;
-}
+.cw-header { display: flex; align-items: center; justify-content: space-between; }
+.cw-temp { display: flex; align-items: flex-end; gap: 14px; }
+.cw-temp-main { font-size: 56px; font-weight: 800; line-height: 1; }
+.cw-unit { font-size: 18px; margin-left: 2px; opacity: 0.9; }
+.cw-city-time { display: flex; flex-direction: column; gap: 4px; }
+.cw-city { font-weight: 700; font-size: 18px; }
+.cw-time { color: #a8b3cf; font-size: 14px; }
+.cw-icon { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.cw-icon img { width: 64px; height: 64px; }
+.cw-desc { color: #e7ecf7; font-weight: 600; font-size: 14px; opacity: 0.9; }
 
-.current-weather .temp {
-  font-size: 2.5rem;
-  margin: 15px 0;
-}
-
-.current-weather .description {
-  font-style: italic;
-  color: #ccc;
-}
+.cw-metrics { margin-top: 18px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.metric { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 12px; display: flex; flex-direction: column; gap: 4px; }
+.metric .label { color: #a8b3cf; font-size: 12px; }
+.metric .value { font-weight: 700; }

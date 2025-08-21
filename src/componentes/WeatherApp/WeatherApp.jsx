@@ -1,80 +1,88 @@
-import React, { useState, useEffect } from "react";
-import api from "../../services/api";
+import React, { useContext } from "react";
 import CurrentWeather from "../CurrentWeather/CurrentWeather";
 import HourlyForecast from "../HourlyForecast/HourlyForecast";
 import DailyForecast from "../DailyForecast/DailyForecast";
 import "./WeatherApp.css";
+import WeatherContext from "../../WeatherContext";
 
 function WeatherApp() {
-  const [currentWeather, setCurrentWeather] = useState(null);
-  const [hourlyForecast, setHourlyForecast] = useState([]);
-  const [dailyForecast, setDailyForecast] = useState([]);
-  const [selectedCity, setSelectedCity] = useState("Buenos Aires"); // ciudad por defecto
-  const [searchQuery, setSearchQuery] = useState("");
-  const [unit, setUnit] = useState("metric");
-
-  useEffect(() => {
-    const fetchWeatherData = async () => {
-      try {
-        if (!selectedCity) return;
-
-        const res = await api.get("forecast", {
-          params: { q: selectedCity, units: unit }
-        });
-
-        // ✅ usamos el nombre real de la ciudad de la API
-        setCurrentWeather({ ...res.data.list[0], name: res.data.city.name });
-
-        // pronóstico horario (próximas 8 horas)
-        setHourlyForecast(res.data.list.slice(0, 8));
-
-        // pronóstico diario
-        const daily = {};
-        res.data.list.forEach(item => {
-          const date = item.dt_txt.split(" ")[0];
-          if (!daily[date]) daily[date] = [];
-          daily[date].push(item);
-        });
-        setDailyForecast(Object.values(daily));
-
-      } catch (error) {
-        console.error("Error al traer los datos del clima:", error);
-      }
-    };
-
-    fetchWeatherData();
-  }, [selectedCity, unit]);
-
-  const handleSearchQueryChange = (e) => setSearchQuery(e.target.value);
-
-  const handleSearch = () => {
-    if (searchQuery.trim() !== "") setSelectedCity(searchQuery);
-  };
-
-  const handleTemperatureUnitChange = (unit) => setUnit(unit);
+  const {
+    unit,
+    handleTemperatureUnitChange,
+    searchQuery,
+    handleSearchQueryChange,
+    handleSearch,
+    otherCitiesWeather,
+    setSelectedCity
+  } = useContext(WeatherContext);
 
   return (
     <div className="weather-app">
-      <div className="search-bar">
-        <input
-          type="text"
-          value={searchQuery}
-          onChange={handleSearchQueryChange}
-          placeholder="Buscar ciudad..."
-        />
-        <button onClick={handleSearch}>Buscar</button>
+      <div className="topbar">
+        <div className="search-bar">
+          <span className="search-icon">🔍</span>
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={handleSearchQueryChange}
+            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+            placeholder="Search city..."
+          />
+          <button onClick={handleSearch}>Buscar</button>
+        </div>
+        <div className="unit-toggle">
+          <button
+            className={unit === "metric" ? "active" : ""}
+            onClick={() => handleTemperatureUnitChange("metric")}
+          >
+            °C
+          </button>
+          <button
+            className={unit === "imperial" ? "active" : ""}
+            onClick={() => handleTemperatureUnitChange("imperial")}
+          >
+            °F
+          </button>
+        </div>
       </div>
 
-      <div className="unit-toggle">
-        <button onClick={() => handleTemperatureUnitChange("metric")}>°C</button>
-        <button onClick={() => handleTemperatureUnitChange("imperial")}>°F</button>
+      <div className="content-grid">
+        <div className="left-column">
+          <CurrentWeather />
+
+          <div className="other-cities">
+            <h3>Other large cities</h3>
+            <div className="other-cities-list">
+              {otherCitiesWeather.map((c) => (
+                <button
+                  key={c.query}
+                  className="city-card"
+                  onClick={() => setSelectedCity(c.query)}
+                >
+                  <div className="city-info">
+                    <span className="city-name">{c.label}</span>
+                    <span className="city-desc">{c.description}</span>
+                  </div>
+                  <div className="city-temp">
+                    <img alt="icon" src={`https://openweathermap.org/img/wn/${c.icon}.png`} />
+                    <span>{c.temp}{unit === "metric" ? "°C" : "°F"}</span>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="right-column">
+          <div className="hourly-section">
+            <HourlyForecast />
+          </div>
+          <div className="daily-section">
+            <h3>5-day forecast</h3>
+            <DailyForecast />
+          </div>
+        </div>
       </div>
-
-      <CurrentWeather weatherData={currentWeather} unit={unit} />
-
-      <HourlyForecast forecastData={hourlyForecast} unit={unit} />
-
-      <DailyForecast forecastData={dailyForecast} unit={unit} />
     </div>
   );
 }

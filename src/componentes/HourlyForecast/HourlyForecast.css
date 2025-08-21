@@ -1,26 +1,29 @@
 .hourly-forecast {
   display: flex;
   overflow-x: auto;
-  gap: 15px;
-  margin-bottom: 30px;
-  padding-bottom: 10px;
+  gap: 12px;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
 }
 
 .hour-card {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 14px;
-  padding: 15px;
-  min-width: 100px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 12px 10px;
+  min-width: 86px;
   text-align: center;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.3);
 }
 
 .hour-card .time {
-  font-weight: bold;
-  margin-bottom: 8px;
+  font-weight: 700;
+  margin-bottom: 6px;
 }
 
 .hour-card .temp {
-  font-size: 1.2rem;
-  margin-top: 8px;
+  font-size: 1.05rem;
+  margin-top: 6px;
+  font-weight: 700;
 }
+
+.h-icon { width: 32px; height: 32px; }
