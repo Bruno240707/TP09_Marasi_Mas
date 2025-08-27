@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import WeatherApp from "./componentes/WeatherApp/WeatherApp.jsx";
 import WeatherContext from "./WeatherContext.js";
 import api from "./services/api";
+import { roundNearestInt } from "./utils/numberUtils";
 
 const QUICK_CITIES = [
   { label: "New York", query: "New York,US" },
@@ -56,7 +57,7 @@ function App() {
         if (!isMounted) return;
         const mapped = responses.map((r, idx) => ({
           label: QUICK_CITIES[idx].label,
-          temp: Math.round(r.data.main.temp),
+          temp: roundNearestInt(r.data.main.temp),
           description: r.data.weather[0].main,
           icon: r.data.weather[0].icon,
           query: QUICK_CITIES[idx].query

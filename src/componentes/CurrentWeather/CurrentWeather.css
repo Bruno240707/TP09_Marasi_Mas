@@ -4,6 +4,7 @@
   padding: 22px;
   border-radius: 18px;
   width: 100%;
+  min-height: 220px;
 }
 
 .cw-header { display: flex; align-items: center; justify-content: space-between; }

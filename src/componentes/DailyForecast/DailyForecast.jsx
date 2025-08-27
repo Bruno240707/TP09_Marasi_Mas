@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import "./DailyForecast.css";
 import WeatherContext from "../../WeatherContext";
+import { minArray, maxArray, ensureAtLeast, roundNearestInt } from "../../utils/numberUtils";
 
 const daysEs = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
 
@@ -10,16 +11,16 @@ function DailyForecast() {
 
   const cincoDias = forecastData.slice(0, 5);
   const allTemps = cincoDias.flatMap((dia) => dia.map((i) => i.main.temp));
-  const globalMin = Math.min(...allTemps);
-  const globalMax = Math.max(...allTemps);
-  const globalRange = Math.max(1, globalMax - globalMin);
+  const globalMin = minArray(allTemps);
+  const globalMax = maxArray(allTemps);
+  const globalRange = ensureAtLeast(globalMax - globalMin, 1);
 
   return (
     <div className="daily-forecast">
       {cincoDias.map((day, idx) => {
         const temps = day.map((i) => i.main.temp);
-        const minTemp = Math.min(...temps);
-        const maxTemp = Math.max(...temps);
+        const minTemp = minArray(temps);
+        const maxTemp = maxArray(temps);
         const icon = day[0].weather?.[0]?.icon;
         const dateObj = new Date(day[0].dt * 1000);
         const dayName = daysEs[dateObj.getDay()];
@@ -37,8 +38,8 @@ function DailyForecast() {
               </div>
             </div>
             <div className="day-cell temps">
-              <span className="min">{Math.round(minTemp)}{unit === "metric" ? "°C" : "°F"}</span>
-              <span className="max">{Math.round(maxTemp)}{unit === "metric" ? "°C" : "°F"}</span>
+              <span className="min">{roundNearestInt(minTemp)}{unit === "metric" ? "°C" : "°F"}</span>
+              <span className="max">{roundNearestInt(maxTemp)}{unit === "metric" ? "°C" : "°F"}</span>
             </div>
           </div>
         );

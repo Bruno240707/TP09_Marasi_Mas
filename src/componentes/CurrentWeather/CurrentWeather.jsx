@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import "./CurrentWeather.css";
 import WeatherContext from "../../WeatherContext";
+import { roundNearestInt } from "../../utils/numberUtils";
 
 function CurrentWeather() {
   const { currentWeather: weatherData, unit } = useContext(WeatherContext);
@@ -18,7 +19,7 @@ function CurrentWeather() {
       <div className="cw-header">
         <div className="cw-temp">
           <div className="cw-temp-main">
-            {Math.round(weatherData.main.temp)}
+            {roundNearestInt(weatherData.main.temp)}
             <span className="cw-unit">{unit === "metric" ? "°C" : "°F"}</span>
           </div>
           <div className="cw-city-time">
@@ -34,15 +35,15 @@ function CurrentWeather() {
       <div className="cw-metrics">
         <div className="metric">
           <span className="label">Feel like</span>
-          <span className="value">{Math.round(weatherData.main.feels_like)}{unit === "metric" ? "°C" : "°F"}</span>
+          <span className="value">{roundNearestInt(weatherData.main.feels_like)}{unit === "metric" ? "°C" : "°F"}</span>
         </div>
         <div className="metric">
           <span className="label">Wind</span>
-          <span className="value">{Math.round(weatherData.wind.speed)} {unit === "metric" ? "m/s" : "mph"}</span>
+          <span className="value">{roundNearestInt(weatherData.wind.speed)} {unit === "metric" ? "m/s" : "mph"}</span>
         </div>
         <div className="metric">
           <span className="label">Min/Max</span>
-          <span className="value">{Math.round(weatherData.main.temp_min)} / {Math.round(weatherData.main.temp_max)}{unit === "metric" ? "°C" : "°F"}</span>
+          <span className="value">{roundNearestInt(weatherData.main.temp_min)} / {roundNearestInt(weatherData.main.temp_max)}{unit === "metric" ? "°C" : "°F"}</span>
         </div>
       </div>
     </div>
